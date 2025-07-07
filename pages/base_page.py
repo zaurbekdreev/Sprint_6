@@ -1,5 +1,4 @@
 from functools import wraps
-
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -86,3 +85,8 @@ class BasePage:
         tabs = self.driver.window_handles
         self.driver.switch_to.window(tabs[-1])
         self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
+
+    def accept_cookies(self, locator):
+        has_cookies = self.find_elements(locator)
+        if has_cookies:
+            self.click(locator)

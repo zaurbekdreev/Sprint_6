@@ -1,11 +1,13 @@
 import allure
+from data.other_urls import DZEN_URL
 from data.questions_and_answers import QUESTIONS, ANSWERS
 from data.service import qa_scooter_service
+from locators.common_locators import CommonLocators
 from locators.main_page_locators import MainPageLocators
-from pages.common_page import CommonPage
+from pages.base_page import BasePage
 
 
-class MainPage(CommonPage):
+class MainPage(BasePage):
 
     @allure.step('Открываем главную страницу')
     def open(self):
@@ -57,3 +59,23 @@ class MainPage(CommonPage):
     def check_top_order_button(self):
         self.open_order_page_from_top_button()
         return self.get_current_url() == qa_scooter_service.order
+
+    @allure.step('Принимаем куки')
+    def accept_cookies(self):
+        super().accept_cookies(CommonLocators.COOKIE_BUTTON)
+
+    @allure.step('Нажимаем на лого самоката')
+    def click_scooter_logo(self):
+        self.click(CommonLocators.LOGO_SCOOTER)
+
+    @allure.step('Нажимаем на лого яндекса')
+    def click_yandex_logo(self):
+        self.click(CommonLocators.LOGO_YANDEX)
+
+    @allure.step('Проверяем, что нажатие на лого самоката ведет на главную страницу "Самоката"')
+    def check_click_scooter_logo_leads_to_scooter_main_page(self):
+        return self.get_current_url() == qa_scooter_service.base_url
+
+    @allure.step('Проверяем, что нажатие на лого яндекса ведет на главную страницу "Дзена"')
+    def check_click_yandex_logo_leads_to_dzen_main_page(self):
+        return DZEN_URL in self.get_current_url()
